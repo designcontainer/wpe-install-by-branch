@@ -1,0 +1,43 @@
+{
+  "name": "wpe-install-by-branch",
+  "version": "0.5.0",
+  "description": "Tbd",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "rimraf ./clones && node lib/index.js",
+    "dev": "DEBUG=simple-git npm start",
+    "package": "ncc build lib/index.js -o dist",
+    "gitAdd": "git add dist/index.js",
+    "gen-readme-toc": "markdown-toc -i README.md",
+    "lint": "eslint --max-warnings 0 .",
+    "lint-fix": "eslint --fix .",
+    "test": "npm run lint && jest"
+  },
+  "pre-commit": [
+    "package",
+    "gitAdd"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/designcontainer/wpe-install-by-branch.git"
+  },
+  "author": "Rostislav Melkumyan <rosti@designcontainer.no>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/designcontainer/wpe-install-by-branch/issues"
+  },
+  "homepage": "https://github.com/designcontainer/wpe-install-by-branch#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "dc-wpe-js-api": "designcontainer/wpe-js-api#v1.1.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.23.0",
+    "eslint": "^7.7.0",
+    "eslint-plugin-jest": "^23.20.0",
+    "eslint-plugin-sonarjs": "^0.5.0",
+    "jest": "^26.4.1",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^3.0.2"
+  }
+}

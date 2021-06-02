@@ -4692,8 +4692,8 @@ async function run() {
 
 	try {
 		// Action inputs
-		const user = core.getInput('WPE_SSHG_KEY_PUBLIC', { required: true });
-		const pass = core.getInput('WPE_SSHG_KEY_PRIVATE', { required: true });
+		const user = core.getInput('wpe_ssh_key_pub', { required: true });
+		const pass = core.getInput('wpe_ssh_key_priv', { required: true });
 		// Github envs
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 		const branch = process.env.GITHUB_REF;

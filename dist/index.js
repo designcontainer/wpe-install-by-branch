@@ -4687,7 +4687,7 @@ const core = __nccwpck_require__(2186);
 const WpeApi = __nccwpck_require__(1465);
 
 async function run() {
-	if (triggerEventName !== 'push')
+	if (process.env.GITHUB_EVENT_NAME !== 'push')
 		return core.setFailed('This GitHub Action works only when triggered by "push".');
 
 	try {

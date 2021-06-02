@@ -4698,7 +4698,10 @@ async function run() {
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 		const branch = process.env.GITHUB_REF;
 
-		if (branch === 'master') return repo;
+		if (branch === 'master') {
+			core.info(`Install for branch ${branch} is: ${install_to_deploy}`);
+			return repo;
+		}
 
 		// Init WPE API
 		const wpe = new WpeApi(user, pass);
@@ -4718,16 +4721,16 @@ async function run() {
 		});
 
 		core.info('Getting install by branch name');
-		const install_to_deploy = installs_in_site.find((obj) => {
-			return obj.environment === branch;
+		const install_to_deploy = installs_in_site.find((install) => {
+			return install.environment === branch;
 		});
 
 		core.info('Returning install');
 		if (install_to_deploy === 'undefined') {
 			core.setFailed(`Install for branch ${branch} does not exist. Deployment failed.`);
 		} else {
-			core.info(`Install for branch ${branch} is: ${install_to_deploy}`);
-			return install_to_deploy;
+			core.info(`Install for branch ${branch} is: ${install_to_deploy.name}`);
+			return install_to_deploy.name;
 		}
 
 		core.endGroup();

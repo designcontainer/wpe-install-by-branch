@@ -4717,14 +4717,24 @@ async function run() {
 		const install_id = await wpe.id(repo);
 
 		core_default().info('Getting site id');
-		const site_id = await wpe.getWpeApi('installs', install_id).then((res) => {
-			return res.site.id;
-		});
+		const site_id = await wpe
+			.getWpeApi('installs', install_id)
+			.then((res) => {
+				return res.site.id;
+			})
+			.catch((error) => {
+				throw new Error(error);
+			});
 
 		core_default().info('Getting all installs in site');
-		const installs_in_site = await wpe.getWpeApi('sites', site_id).then((res) => {
-			return res.installs;
-		});
+		const installs_in_site = await wpe
+			.getWpeApi('sites', site_id)
+			.then((res) => {
+				return res.installs;
+			})
+			.catch((error) => {
+				throw new Error(error);
+			});
 
 		core_default().info('Getting install by branch name');
 		const install_to_deploy = installs_in_site.find((install) => {

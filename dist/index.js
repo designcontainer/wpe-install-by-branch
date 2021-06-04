@@ -4367,35 +4367,6 @@ module.exports = require("zlib");;
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/compat get default export */
-/******/ 	(() => {
-/******/ 		// getDefaultExport function for compatibility with non-harmony modules
-/******/ 		__nccwpck_require__.n = (module) => {
-/******/ 			var getter = module && module.__esModule ?
-/******/ 				() => (module['default']) :
-/******/ 				() => (module);
-/******/ 			__nccwpck_require__.d(getter, { a: getter });
-/******/ 			return getter;
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/define property getters */
-/******/ 	(() => {
-/******/ 		// define getter functions for harmony exports
-/******/ 		__nccwpck_require__.d = (exports, definition) => {
-/******/ 			for(var key in definition) {
-/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
-/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
-/******/ 				}
-/******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
-/******/ 	(() => {
-/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -4419,7 +4390,6 @@ __nccwpck_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2186);
-var core_default = /*#__PURE__*/__nccwpck_require__.n(core);
 // EXTERNAL MODULE: ./node_modules/axios/index.js
 var axios = __nccwpck_require__(6545);
 ;// CONCATENATED MODULE: external "querystring"
@@ -4693,65 +4663,55 @@ class WpeApi {
 
 async function run() {
 	if (process.env.GITHUB_EVENT_NAME !== 'push')
-		return core_default().setFailed('This GitHub Action works only when triggered by "push".');
+		return core.setFailed('This GitHub Action works only when triggered by "push".');
 
 	try {
 		// Action inputs
-		const user = core_default().getInput('wpe_ssh_key_pub', { required: true });
-		const pass = core_default().getInput('wpe_ssh_key_priv', { required: true });
+		const user = core.getInput('wpe_ssh_key_pub', { required: true });
+		const pass = core.getInput('wpe_ssh_key_priv', { required: true });
 
 		// Github envs
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 		const branch = process.env.GITHUB_REF;
 
 		if (branch === 'master') {
-			core_default().info(`Install for branch ${branch} is: ${install_to_deploy}`);
+			core.info(`Install for branch ${branch} is: ${install_to_deploy}`);
 			return repo;
 		}
 
 		// Init WPE API
 		const wpe = new dc_wpe_js_api(user, pass);
 
-		core_default().startGroup('Getting WP Engine info');
-		core_default().info('Getting install id by name');
+		core.startGroup('Getting WP Engine info');
+		core.info('Getting install id by name');
 		const install_id = await wpe.id(repo);
 
-		core_default().info('Getting site id');
-		const site_id = await wpe
-			.getWpeApi('installs', install_id)
-			.then((res) => {
-				return res.site.id;
-			})
-			.catch((error) => {
-				throw new Error(error);
-			});
+		core.info('Getting site id');
+		const site_id = await wpe.getWpeApi('installs', install_id).then((res) => {
+			return res.site.id;
+		});
 
-		core_default().info('Getting all installs in site');
-		const installs_in_site = await wpe
-			.getWpeApi('sites', site_id)
-			.then((res) => {
-				return res.installs;
-			})
-			.catch((error) => {
-				throw new Error(error);
-			});
+		core.info('Getting all installs in site');
+		const installs_in_site = await wpe.getWpeApi('sites', site_id).then((res) => {
+			return res.installs;
+		});
 
-		core_default().info('Getting install by branch name');
+		core.info('Getting install by branch name');
 		const install_to_deploy = installs_in_site.find((install) => {
 			return install.environment === branch;
 		});
 
-		core_default().info('Returning install');
+		core.info('Returning install');
 		if (install_to_deploy === 'undefined') {
-			core_default().setFailed(`Install for branch ${branch} does not exist. Deployment failed.`);
+			core.setFailed(`Install for branch ${branch} does not exist. Deployment failed.`);
 		} else {
-			core_default().info(`Install for branch ${branch} is: ${install_to_deploy.name}`);
+			core.info(`Install for branch ${branch} is: ${install_to_deploy.name}`);
 			return install_to_deploy.name;
 		}
 
-		core_default().endGroup();
+		core.endGroup();
 	} catch (error) {
-		core_default().setFailed(`Action failed because of: ${error}`);
+		core.setFailed(`Action failed because of: ${error}`);
 	}
 }
 

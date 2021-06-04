@@ -4367,6 +4367,23 @@ module.exports = require("zlib");;
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__nccwpck_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/make namespace object */
 /******/ 	(() => {
 /******/ 		// define __esModule on exports
@@ -4387,6 +4404,13 @@ var __webpack_exports__ = {};
 "use strict";
 // ESM COMPAT FLAG
 __nccwpck_require__.r(__webpack_exports__);
+
+// NAMESPACE OBJECT: ./node_modules/dc-wpe-js-api/index.js
+var dc_wpe_js_api_namespaceObject = {};
+__nccwpck_require__.r(dc_wpe_js_api_namespaceObject);
+__nccwpck_require__.d(dc_wpe_js_api_namespaceObject, {
+  "default": () => (dc_wpe_js_api)
+});
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2186);
@@ -4680,7 +4704,7 @@ async function run() {
 		}
 
 		// Init WPE API
-		const wpe = new dc_wpe_js_api(user, pass);
+		const wpe = new dc_wpe_js_api_namespaceObject(user, pass);
 
 		core.startGroup('Getting WP Engine info');
 		core.info('Getting install id by name');

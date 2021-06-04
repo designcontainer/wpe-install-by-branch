@@ -4672,11 +4672,10 @@ async function run() {
 
 		// Github envs
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
-		const branch = process.env.GITHUB_REF;
 
-		if (branch === 'master') {
-			core.info(`Install for branch ${branch} is: ${install_to_deploy}`);
-			return repo;
+		if (process.env.GITHUB_REF === 'master') {
+			core.info(`Install for branch ${branch} is: ${repo}`);
+			core.setOutput('install', repo);
 		}
 
 		// Init WPE API
@@ -4706,7 +4705,7 @@ async function run() {
 			core.setFailed(`Install for branch ${branch} does not exist. Deployment failed.`);
 		} else {
 			core.info(`Install for branch ${branch} is: ${install_to_deploy.name}`);
-			return install_to_deploy.name;
+			core.setOutput('install', install_to_deploy.name);
 		}
 
 		core.endGroup();

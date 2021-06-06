@@ -4367,299 +4367,14 @@ module.exports = require("zlib");;
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/make namespace object */
-/******/ 	(() => {
-/******/ 		// define __esModule on exports
-/******/ 		__nccwpck_require__.r = (exports) => {
-/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 			}
-/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";/************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-"use strict";
-// ESM COMPAT FLAG
-__nccwpck_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
-var core = __nccwpck_require__(2186);
-// EXTERNAL MODULE: ./node_modules/axios/index.js
-var axios = __nccwpck_require__(6545);
-;// CONCATENATED MODULE: external "querystring"
-const external_querystring_namespaceObject = require("querystring");;
-;// CONCATENATED MODULE: ./node_modules/dc-wpe-js-api/classes/class-helper.js
-
-
-/**
- * Class containing module helper methods.
- */
-class Helper {
-	constructor() {}
-
-	/**
-	 * Check if arg is Object.
-	 *
-	 * @param {any} arg The data you want to check if object.
-	 * @return {bool} Returns boolean true/false depending on if arg is object.
-	 */
-	isObject = (arg) => {
-		if (typeof arg === 'object' && arg !== null) {
-			return true;
-		}
-		return false;
-	};
-
-	/**
-	 * Return a query string from arguments.
-	 * Used for handing data to API requests / Axios.
-	 *
-	 * @param {any} args The API arguments
-	 * @return {string} Returns a formatted query string.
-	 */
-	handleGetApiArgs = (args) => {
-		let names = [];
-		let queries = [];
-		args.forEach((arg) => {
-			if (this.isObject(arg) === false) {
-				names.push(arg);
-			} else {
-				queries.push(arg);
-			}
-		});
-		names = names.join('/');
-		queries = `?${external_querystring_namespaceObject.encode(queries)}`;
-		return names + queries;
-	};
-
-	/**
-	 * Return a object from arguments.
-	 * Used for posting data to API requests / Axios.
-	 *
-	 * @param {any} args The API arguments
-	 * @return {string} Returns a an object containing slug and formData.
-	 */
-	handlePostApiArgs = (args) => {
-		let slug = [];
-		let formData = [];
-		args.forEach((arg) => {
-			if (this.isObject(arg) === false) {
-				slug.push(arg);
-			} else {
-				formData.push(arg);
-			}
-		});
-		slug = slug.join('/');
-		return {
-			slug,
-			formData,
-		};
-	};
-}
-
-/* harmony default export */ const class_helper = (Helper);
-
-;// CONCATENATED MODULE: ./node_modules/dc-wpe-js-api/index.js
-// Import external deps
-
-
-// Import internal deps
-
-
-/**
- * Class for communicating with the WP Engine API using JavaScript.
- *
- * @param {string} user The WP Engine API User.
- * @param {string} pass The WP Engine API Password/key.
- */
-class WpeApi {
-	constructor(user, pass) {
-		this.user = user;
-		this.pass = pass;
-	}
-
-	/**
-	 * Get custom WP Engine data.
-	 *
-	 * @param {any} args Api arguments. Docs: https://wpengineapi.com.
-	 * @return {object} Returns api data.
-	 */
-	getWpeApi = async (...args) => {
-		args = new class_helper().handleGetApiArgs(args);
-		const urlAxios = `https://api.wpengineapi.com/v1/${args}`;
-		const optionAxios = {
-			headers: {
-				Authorization:
-					'Basic ' + Buffer.from(this.user + ':' + this.pass).toString('base64'),
-			},
-		};
-
-		return await axios.get(urlAxios, optionAxios)
-			.then((res) => res.data)
-			.catch((error) => {
-				throw new Error(error);
-			});
-	};
-
-	/**
-	 * Post custom WP Engine data.
-	 *
-	 * @param {any} args Api arguments. Docs: https://wpengineapi.com.
-	 * @return {object} Returns api response.
-	 */
-	postWpeApi = async (...args) => {
-		args = new class_helper().handlePostApiArgs(args);
-
-		const urlAxios = `https://api.wpengineapi.com/v1/${args.slug}`;
-		const formDataAxios = args.formData[0];
-		const optionAxios = {
-			headers: {
-				Authorization:
-					'Basic ' + Buffer.from(this.user + ':' + this.pass).toString('base64'),
-			},
-		};
-
-		return await axios.post(urlAxios, formDataAxios, optionAxios)
-			.then((res) => res.data)
-			.catch((error) => {
-				throw new Error(error);
-			});
-	};
-
-	/**
-	 * Get WP Engine install ID by name.
-	 *
-	 * @param {string} name The WP Engine install Name.
-	 * @return {string} Returns the WP Engine install ID.
-	 */
-	id = async (name) => {
-		const data = await this.getWpeApi('installs', { limit: 1000 });
-		const installs = data.results;
-		const install = installs.find((installObj) => {
-			return installObj.name === name;
-		});
-		return install['id'];
-	};
-
-	/**
-	 * Get WP Engine install name by ID.
-	 *
-	 * @param {string} id The WP Engine install ID.
-	 * @return {string} Returns the WP Engine install name.
-	 */
-	name = async (id) => {
-		const res = await this.getWpeApi('installs', id);
-		return res['name'];
-	};
-
-	/**
-	 * Get WP Engine install domains by ID.
-	 *
-	 * @param {string} id The WP Engine install ID.
-	 * @return {array} Returns the WP Engine install domains.
-	 */
-	domains = async (id) => {
-		const domainsObj = await this.getWpeApi('installs', id, 'domains');
-		const domains = domainsObj.results.map((item) => {
-			return item['name'];
-		});
-		return domains;
-	};
-
-	/**
-	 * Get the PHP version of the WP Engine install by ID.
-	 *
-	 * @param {string} id The WP Engine install ID.
-	 * @return {string} Returns the PHP version of the WP Engine install.
-	 */
-	phpVersion = async (id) => {
-		const res = await this.getWpeApi('installs', id);
-		return res['php_version'];
-	};
-
-	/**
-	 * Get the status of the WP Engine install by ID.
-	 *
-	 * @param {string} id The WP Engine install ID.
-	 * @return {string} Returns the status of the WP Engine install.
-	 */
-	status = async (id) => {
-		const res = await this.getWpeApi('installs', id);
-		return res['status'];
-	};
-
-	/**
-	 * Get the CNAME of the WP Engine install by ID.
-	 *
-	 * @param {string} id The WP Engine install ID.
-	 * @return {string} Returns the CNAME of the WP Engine install.
-	 */
-	cname = async (id) => {
-		const res = await this.getWpeApi('installs', id);
-		return res['cname'];
-	};
-
-	/**
-	 * Get the WP Engine install environment by ID.
-	 *
-	 * @param {string} id The WP Engine install ID.
-	 * @return {string} Returns the WP Engine install environment.
-	 */
-	environment = async (id) => {
-		const res = await this.getWpeApi('installs', id);
-		return res['environment'];
-	};
-
-	/**
-	 * Get WP Engine primary install domain by ID.
-	 *
-	 * @param {string} id The WP Engine install ID.
-	 * @return {string} Returns the WP Engine install primary domain.
-	 */
-	primaryDomain = async (id) => {
-		const res = await this.getWpeApi('installs', id);
-		return res['primary_domain'];
-	};
-
-	/**
-	 * Check if WP Engine install is a multisite environment by ID.
-	 *
-	 * @param {string} id The WP Engine install ID.
-	 * @return {bool} Returns boolean true/false depending on if install is a multisite environment.
-	 */
-	isMultisite = async (id) => {
-		const res = await this.getWpeApi('installs', id);
-		return res['is_multisite'];
-	};
-
-	/**
-	 * Creates a new WP Engine Backup by ID.
-	 *
-	 * @param {string} id The WP Engine install ID.
-	 * @param {string} description Backup description.
-	 * @param {Array} notification_emails Backup notification email addresses.
-	 * @return {object} Returns backup response.
-	 */
-	newBackup = async (id, description, notification_emails) => {
-		const res = await this.postWpeApi('installs', id, 'backups', {
-			description,
-			notification_emails,
-		});
-		return res;
-	};
-}
-
-/* harmony default export */ const dc_wpe_js_api = (WpeApi);
-
-;// CONCATENATED MODULE: ./lib/index.js
-
-
+const core = __nccwpck_require__(2186);
+const axios = __nccwpck_require__(6545).default;
 
 async function run() {
 	if (process.env.GITHUB_EVENT_NAME !== 'push')
@@ -4667,8 +4382,8 @@ async function run() {
 
 	try {
 		// Action inputs
-		const user = core.getInput('wpe_ssh_key_pub', { required: true });
-		const pass = core.getInput('wpe_ssh_key_priv', { required: true });
+		const wpeUser = core.getInput('wpe_ssh_key_pub', { required: true });
+		const wpePass = core.getInput('wpe_ssh_key_priv', { required: true });
 
 		// Github envs
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
@@ -4678,34 +4393,38 @@ async function run() {
 			core.setOutput('install', repo);
 		}
 
-		// Init WPE API
-		const wpe = new dc_wpe_js_api(user, pass);
-
 		core.startGroup('Getting WP Engine info');
-		core.info('Getting install id by name');
-		const install_id = await wpe.id(repo);
 
-		core.info('Getting site id');
-		const site_id = await wpe.getWpeApi('installs', install_id).then((res) => {
-			return res.site.id;
-		});
+		core.info('Getting all sites from WP Engine');
+		const urlAxios = 'https://api.wpengineapi.com/v1/sites?limit=1000';
+		const optionAxios = {
+			headers: {
+				Authorization: 'Basic ' + Buffer.from(wpeUser + ':' + wpePass).toString('base64'),
+			},
+		};
+		const sites = await axios
+			.get(urlAxios, optionAxios)
+			.then((res) => res.data.results)
+			.catch((error) => {
+				throw new Error(error);
+			});
 
-		core.info('Getting all installs in site');
-		const installs_in_site = await wpe.getWpeApi('sites', site_id).then((res) => {
-			return res.installs;
-		});
+		core.info('Getting site by install name');
+		const thisSite = sites.filter((site) =>
+			site.installs.some((install) => install.name == repo)
+		)[0];
 
-		core.info('Getting install by branch name');
-		const install_to_deploy = installs_in_site.find((install) => {
+		core.info('Getting install for deployment by branch name');
+		const installToDeploy = thisSite.installs.find((install) => {
 			return install.environment === branch;
 		});
 
 		core.info('Returning install');
-		if (install_to_deploy === 'undefined') {
+		if (installToDeploy === 'undefined') {
 			core.setFailed(`Install for branch ${branch} does not exist. Deployment failed.`);
 		} else {
-			core.info(`Install for branch ${branch} is: ${install_to_deploy.name}`);
-			core.setOutput('install', install_to_deploy.name);
+			core.info(`Install for branch ${branch} is: ${installToDeploy.name}`);
+			core.setOutput('install', installToDeploy.name);
 		}
 
 		core.endGroup();

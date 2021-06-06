@@ -4392,6 +4392,7 @@ async function run() {
 		if (process.env.GITHUB_REF === 'master') {
 			core.info(`Install for branch ${branch} is: ${repo}`);
 			core.setOutput('install', repo);
+			return;
 		}
 
 		core.startGroup('Getting WP Engine info');
@@ -4417,7 +4418,7 @@ async function run() {
 		});
 
 		core.info('Returning install');
-		if (installToDeploy === 'undefined') {
+		if (installToDeploy === undefined) {
 			core.setFailed(`Install for branch ${branch} does not exist. Deployment failed.`);
 		} else {
 			core.info(`Install for branch ${branch} is: ${installToDeploy.name}`);

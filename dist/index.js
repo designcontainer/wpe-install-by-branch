@@ -4400,7 +4400,7 @@ async function run() {
 		const authAxios = wpeUser + ':' + wpePass;
 		const optionAxios = {
 			headers: {
-				Authorization: 'Basic ' + Buffer.from(authAxios).toString('base64'),
+				Authorization: 'Basic ' + authAxios,
 			},
 		};
 		const sites = await axios.get(urlAxios, optionAxios).then((res) => res.data.results);

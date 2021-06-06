@@ -4385,10 +4385,12 @@ async function run() {
 		const wpeUser = core.getInput('wpe_ssh_key_pub', { required: true });
 		const wpePass = core.getInput('wpe_ssh_key_priv', { required: true });
 
-		core.info(wpeUser);
-
 		// Github envs
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
+
+		const test = wpeUser + '00';
+
+		core.info(test);
 
 		if (process.env.GITHUB_REF === 'master') {
 			core.info(`Install for branch ${branch} is: ${repo}`);

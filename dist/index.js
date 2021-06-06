@@ -4387,7 +4387,7 @@ async function run() {
 
 		// Github envs
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
-		const branch = process.env.GITHUB_REF;
+		const [refs, head, branch] = process.env.GITHUB_REF.split('/');
 
 		core.startGroup('Checking branch');
 

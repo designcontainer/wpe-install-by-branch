@@ -4402,12 +4402,7 @@ async function run() {
 				Authorization: 'Basic ' + Buffer.from(wpeUser + ':' + wpePass).toString('base64'),
 			},
 		};
-		const sites = await axios
-			.get(urlAxios, optionAxios)
-			.then((res) => res.data.results)
-			.catch((error) => {
-				throw new Error(error);
-			});
+		const sites = await axios.get(urlAxios, optionAxios).then((res) => res.data.results);
 
 		core.info('Getting site by install name');
 		const thisSite = sites.filter((site) =>

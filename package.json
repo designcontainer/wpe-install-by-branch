@@ -28,8 +28,7 @@
   },
   "homepage": "https://github.com/designcontainer/wpe-install-by-branch#readme",
   "dependencies": {
-    "@actions/core": "^1.2.6",
-    "dc-wpe-js-api": "designcontainer/wpe-js-api#v1.1.0"
+    "@actions/core": "^1.2.6"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.28.6",

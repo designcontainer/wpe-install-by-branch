@@ -4385,6 +4385,8 @@ async function run() {
 		const wpeUser = core.getInput('wpe_ssh_key_pub', { required: true });
 		const wpePass = core.getInput('wpe_ssh_key_priv', { required: true });
 
+		core.info(wpeUser);
+
 		// Github envs
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 

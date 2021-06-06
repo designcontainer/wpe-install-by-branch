@@ -1,11 +1,11 @@
 name: Get WPE install by branch
 description: Tbd.
 inputs:
-    wpe_ssh_key_pub:
-        description: 'The public RSA key you save in the WP Engine User Portal'
+    wpe_api_key_pub:
+        description: 'WP Engine API username'
         required: true
-    wpe_ssh_key_priv:
-        description: 'The private RSA key you will save in the Github Secrets'
+    wpe_api_key_priv:
+        description: 'WP Engine API password'
         required: true
 runs:
     using: node12

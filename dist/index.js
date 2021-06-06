@@ -4382,8 +4382,8 @@ async function run() {
 
 	try {
 		// Action inputs
-		const wpeUser = core.getInput('wpe_ssh_key_pub', { required: true });
-		const wpePass = core.getInput('wpe_ssh_key_priv', { required: true });
+		const wpeUser = core.getInput('wpe_api_key_pub', { required: true });
+		const wpePass = core.getInput('wpe_api_key_priv', { required: true });
 
 		// Github envs
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
@@ -4397,13 +4397,13 @@ async function run() {
 
 		core.info('Getting all sites from WP Engine');
 		const urlAxios = 'https://api.wpengineapi.com/v1/sites?limit=1000';
-		const optionAxios = {
+		const authAxios = {
 			auth: {
 				username: wpeUser,
 				password: wpePass,
 			},
 		};
-		const sites = await axios.get(urlAxios, optionAxios).then((res) => res.data.results);
+		const sites = await axios.get(urlAxios, authAxios).then((res) => res.data.results);
 
 		core.info('Getting site by install name');
 		const thisSite = sites.filter((site) =>

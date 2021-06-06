@@ -4388,10 +4388,6 @@ async function run() {
 		// Github envs
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 
-		const test = wpeUser + '00';
-
-		core.info(test);
-
 		if (process.env.GITHUB_REF === 'master') {
 			core.info(`Install for branch ${branch} is: ${repo}`);
 			core.setOutput('install', repo);
@@ -4401,9 +4397,10 @@ async function run() {
 
 		core.info('Getting all sites from WP Engine');
 		const urlAxios = 'https://api.wpengineapi.com/v1/sites?limit=1000';
+		const authAxios = wpeUser + ':' + wpePass;
 		const optionAxios = {
 			headers: {
-				Authorization: 'Basic ' + Buffer.from(wpeUser + ':' + wpePass).toString('base64'),
+				Authorization: 'Basic ' + Buffer.from(authAxios).toString('base64'),
 			},
 		};
 		const sites = await axios.get(urlAxios, optionAxios).then((res) => res.data.results);

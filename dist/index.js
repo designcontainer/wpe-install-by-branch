@@ -4389,11 +4389,16 @@ async function run() {
 		const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
 		const branch = process.env.GITHUB_REF;
 
-		if (process.env.GITHUB_REF === 'master') {
+		core.startGroup('Checking branch');
+
+		core.info(`Ref branch is: ${branch}`);
+
+		if (branch === 'master') {
 			core.info(`Install for branch ${branch} is: ${repo}`);
 			core.setOutput('install', repo);
-			return;
 		}
+
+		core.endGroup();
 
 		core.startGroup('Getting WP Engine info');
 

@@ -7,6 +7,11 @@ inputs:
     wpe_api_key_priv:
         description: 'WP Engine API password'
         required: true
+outputs:
+    install:
+        description: 'WP Engine install name to deploy to'
+    environment:
+        description: 'WP Engine git environment (production, staging, or development)'
 runs:
     using: node16
     main: dist/index.js
